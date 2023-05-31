@@ -19,7 +19,7 @@
                                 <?php if ($_SESSION['admin']):?>
                                 <li><a href="login.php">Admin</a></li>
                                 <?php endif;?>
-                                <li><a href="#">Exit</a></li>
+                                <li><a href="<?php echo BASE_URL . "logout.php";?>">Exit</a></li>
                             </ul>
                         <?php else: ?>
                             <a href="<?php echo BASE_URL . "login.php";?>">

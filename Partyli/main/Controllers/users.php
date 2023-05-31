@@ -5,6 +5,16 @@ include("main/db/database.php");
 //var_dump(dirname(__FILE__));
 
 $erorMessage = '';
+function userAuth($user){
+    $_SESSION['id'] = $user['id'];
+    $_SESSION['login'] = $user['username'];
+    $_SESSION['admin'] = $user['admin'];
+    if ($_SESSION['admin']){
+        header('location' . BASE_URL . "admin/posts/index.php");
+    }else{
+        header('location' . BASE_URL );
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
 
@@ -40,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-reg'])){
             $_SESSION['login'] = $user['username'];
             $_SESSION['admin'] = $user['admin'];
             if ($_SESSION['admin']){
-                header('location: '. BASE_URL. 'admin/admin.php');
+                header('location: '. BASE_URL. 'admin/posts/index.php');
             }else{
                 header('location: '. BASE_URL);
             }
@@ -64,9 +74,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['button-log'])){
     }else{
         $existence = selectOne('users',['email' => $email]);
         if ($existence && password_verify($pass, $existence['password'])){
-            echo 'Avto';
+            $_SESSION['id'] = $existence['id'];
+            $_SESSION['login'] = $existence['username'];
+            $_SESSION['admin'] = $existence['admin'];
+            if ($_SESSION['admin']){
+                header('location: '. BASE_URL. 'admin/posts/index.php');
+            }else{
+                header('location: '. BASE_URL);
+            }
          }else{
-            echo 'Error';
+            $erorMessage = "Email or password entered incorrectly";
         }
     }
+}else{
+    $email = '';
 }
